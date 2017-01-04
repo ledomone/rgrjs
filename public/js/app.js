@@ -1,10 +1,9 @@
-var React = require("react");
-var ReactDOM = require("react-dom");
+let React = require("react");
+let ReactDOM = require("react-dom");
 
-var Hello = React.createClass({
-  render: function() {
-    // return React.createElement("h3", null, "Hello React!");
-    return <h3>Hello Webpack? yeah! </h3>
+let Hello = React.createClass({
+  render() {
+    return <h3>Hello ES6</h3>
   }
 });
 
