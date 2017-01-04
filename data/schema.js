@@ -6,14 +6,25 @@ import {
   GraphQLList
 } from 'graphql';
 
-let data = [42, 43, 44];
+let data = [
+  { counter: 42},
+  { counter: 43},
+  { counter: 44}
+];
+
+let counterType = new GraphQLObjectType({
+  name: 'Counter',
+  fields: () => ({
+    counter: { type: GraphQLInt }
+  })
+});
 
 let schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: () => ({
       data: {
-        type: new GraphQLList(GraphQLInt),
+        type: new GraphQLList(counterType),
         resolve: () => data
       }
     })
