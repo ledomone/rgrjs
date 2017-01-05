@@ -4,6 +4,10 @@ import Relay from 'react-relay';
 import Link from './Link';
 
 class Main extends React.Component {
+  setLimit = (e) => {
+    let newLimit = Number(e.target.value);
+    this.props.relay.setVariables({limit: newLimit});
+  }
   render() {
     let content = this.props.store.linkConnection.edges.map(edge => {
       return <Link key={edge.node.id} link={edge.node} />;
@@ -11,6 +15,11 @@ class Main extends React.Component {
     return (
       <div>
         <h3>Links</h3>
+        Showing:&nbsp;
+        <select onChange={this.setLimit} defaultValue="10">
+          <option value="5">5</option>
+          <option value="10">10</option>
+        </select>
         <ul>
           {content}
         </ul>
@@ -22,7 +31,7 @@ class Main extends React.Component {
 // Delcare the data requirement for this Component
 Main = Relay.createContainer(Main, {
   initialVariables: {
-    limit: 3
+    limit: 10
   },
   fragments: {
     store: () => Relay.QL`
