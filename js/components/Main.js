@@ -1,40 +1,18 @@
 import React from 'react';
-import API from '../API';
-import LinkStore from '../stores/LinkStore';
-
-let _getAppState = () => {
-  // read links directly from the store
-  return { links: LinkStore.getAll() };
-}
+import Relay from 'react-relay';
 
 class Main extends React.Component {
   static propTypes = {
     limit: React.PropTypes.number
   }
-
   static defaultProps = {
     limit: 2
   }
-
-  state = _getAppState();
-
-  componentDidMount() {
-    API.fetchLinks();
-    // register in store
-    LinkStore.on('change', this.onChange);
-  }
-  componentWillUnmount() {
-    // unregister
-    LinkStore.removeListener('change', this.onChange);
-  }
-  onChange = () => {
-    console.log('4. In the View');
-    this.setState(_getAppState());
-  }
   render() {
-    let content = this.state.links.slice(0, this.props.limit).map(link => {
+    let content = this.props.store.links.slice(0, this.props.limit).map(link => {
+      // TODO: Make the LI a <Link />
       return <li key={link._id}>
-          <a href={link.url}>{link.title}</a>
+        <a href={link.url}>{link.title}</a>
       </li>;
     });
     return (
@@ -47,5 +25,20 @@ class Main extends React.Component {
     );
   }
 }
+
+// Delcare the data requirement for this Component
+Main = Relay.createContainer(Main, {
+  fragments: {
+    store: () => Relay.QL`
+    fragment on Store {
+      links {
+        _id,
+        title,
+        url
+      }
+    }
+    `
+  }
+});
 
 export default Main;
