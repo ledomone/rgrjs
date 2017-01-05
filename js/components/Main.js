@@ -13,16 +13,11 @@ export default class Main extends React.Component {
   }
 
   static defaultProps = {
-    limit: 3
+    limit: 2
   }
 
   state = _getAppState();
 
-  constructor(props) {
-    super(props);
-
-    this.onChange = this.onChange.bind(this);
-  }
   componentDidMount() {
     API.fetchLinks();
     // register in store
@@ -32,7 +27,7 @@ export default class Main extends React.Component {
     // unregister
     LinkStore.removeListener('change', this.onChange);
   }
-  onChange() {
+  onChange = () => {
     console.log('4. In the View');
     this.setState(_getAppState());
   }
