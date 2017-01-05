@@ -24,7 +24,7 @@ let Schema = (db) => {
         type: linkConnection.connectionType,
         args: connectionArgs, // first: ..., last: ...
         resolve: (_, args) => connectionFromPromisedArray(
-          db.collection("links").find({}).toArray(),
+          db.collection("links").find({}).limit(args.first).toArray(),
           args
         )
       }
