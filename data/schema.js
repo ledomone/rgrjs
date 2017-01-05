@@ -6,16 +6,14 @@ import {
   GraphQLList
 } from 'graphql';
 
-let data = [
-  { counter: 42},
-  { counter: 43},
-  { counter: 44}
-];
 
-let counterType = new GraphQLObjectType({
-  name: 'Counter',
+
+let linkType = new GraphQLObjectType({
+  name: 'Link',
   fields: () => ({
-    counter: { type: GraphQLInt }
+    _id: { type: GraphQLString },
+    title: { type: GraphQLString },
+    url: { type: GraphQLString },
   })
 });
 
@@ -23,19 +21,9 @@ let schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: () => ({
-      data: {
-        type: new GraphQLList(counterType),
-        resolve: () => data
-      }
-    })
-  }),
-
-  mutation: new GraphQLObjectType({
-    name: 'Mutation',
-    fields: () => ({
-      incrementCounter: {
-        type: GraphQLInt,
-        resolve: () => ++counter
+      links: {
+        type: new GraphQLList(linkType),
+        resolve: () => {} // TODO: Read from MongoDB
       }
     })
   })
